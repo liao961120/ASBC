@@ -1,6 +1,11 @@
-FROM python:3.7
+FROM python:3.7-alpine
 WORKDIR /usr/src/app
 COPY requirements.txt /usr/src/app
+RUN apk add --no-cache python3-dev libstdc++ && \
+    apk add --no-cache g++ && \
+    ln -s /usr/include/locale.h /usr/include/xlocale.h && \
+    pip3 install numpy && \
+    pip3 install pandas
 RUN pip install -r requirements.txt
 RUN pip install gunicorn
 COPY . /usr/src/app

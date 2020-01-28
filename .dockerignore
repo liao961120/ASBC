@@ -2,6 +2,7 @@
 __pycache__
 source
 build
+docs
 test.py
 cache.tsv
 make.bat
