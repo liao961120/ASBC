@@ -1,5 +1,6 @@
 import falcon
 import json
+import io
 from falcon_cors import CORS
 from ASBC.queryDB import Corpus
 import ASBC.queryParser as Parser
@@ -12,39 +13,9 @@ print("Corpus Loaded")
 ############ _DEBUGGING ##############
 
 
-class oneGram(object):
-    def on_get(self, req, resp):
-        """Handles GET requests"""
-        params = {
-            'token': None,
-            'pos': None,
-            'left': 10,
-            'right': 10
-        }
-        for k, v in req.params.items():
-            params[k] = v
-        
-        if params['token'] is None or params['pos'] is None:
-            return
-        print("Recieved request!!!")
-
-        # Query DB
-        query = C.queryOneGram(token=params['token'], pos=params['pos'])  #token="^試$", pos="V%"
-        results = [{}] * query.shape[0]
-        # Retrieve Concordance
-        for i, (idx, row) in enumerate(query.iterrows()):
-            results[i] = C.concordance(text_id=row.text_id, sent_id=row.sent_id, position=row.position, n=1, left=params['left'], right=params['right'])
-
-        # Response to frontend
-        print("Sending response...")
-        resp.status = falcon.HTTP_200  # This is the default status
-        CONCORDANCE_CACHE = json.dumps(results, ensure_ascii=False)
-        resp.body = CONCORDANCE_CACHE
-        print("Response sent !!!")
-
-
 class nGram(object):
     def on_get(self, req, resp):
+        global CONCORDANCE_CACHE
         params = {
             'query': '''[word="" pos=""][pos='' word="他"][word.regex='打' pos='V.*']''',
             'left': '10',
@@ -82,10 +53,6 @@ class nGram(object):
             'left': int(params['left']),
             'right': int(params['right'])
         }
-        ######## Debugging ##############
-        print(params['query'])
-        #################################
-
         results = [{}] * query.shape[0]
         for i, (idx, row) in enumerate(query.iterrows()):
             results[i] = C.concordance(text_id=row.text_id, sent_id=row.sent_id, position=(row.position - anchor['seed']) ,**concord_params)
@@ -95,13 +62,48 @@ class nGram(object):
         print("Sending response...")
         ############ _DEBUGGING ##############
         resp.status = falcon.HTTP_200  # This is the default status
-        CONCORDANCE_CACHE = json.dumps(results, ensure_ascii=False)
-        resp.body = CONCORDANCE_CACHE
+        CONCORDANCE_CACHE = results
+        resp.body =json.dumps(results, ensure_ascii=False)
         ############ DEBUGGING ##############
         print("Response sent !!!")
         ############ _DEBUGGING ##############
 
 
+    def on_get_export(self, req, resp):
+        global CONCORDANCE_CACHE
+        params = {
+            'kwtag': True,
+            'ctxtag': True,
+        }
+        for k, v in req.params.items():
+            if v == "true":
+                params[k] = True
+            else:
+                params[k] = False
+
+        # Process concordance to tsv
+        with open("cache.tsv", "w") as f:
+            f.write('left\tkeyword\tright\n')
+            for kwic in CONCORDANCE_CACHE:
+                if params['kwtag']:
+                    keyword = ' '.join(f"{word}/{tag}" for word, tag in kwic['keyword'])
+                else: 
+                    keyword = ' '.join(f"{word}" for word, tag in kwic['keyword'])
+                if params['ctxtag']:
+                    left = ' '.join(f"{word}/{tag}" for word, tag in kwic['left'])
+                    right = ' '.join(f"{word}/{tag}" for word, tag in kwic['right'])
+                else:
+                    left = ''.join(f"{word}" for word, tag in kwic['left'])
+                    right = ''.join(f"{word}" for word, tag in kwic['right'])
+                f.write(f'{left}\t{keyword}\t{right}\n')
+
+        resp.content_type = 'text/tsv'
+        resp.status = falcon.HTTP_200  # This is the default status
+        #outfile = open(, encoding="utf-8")
+        with open("cache.tsv", 'r') as f:
+            resp.body = f.read()
+        
+        
 
 #---------- API settings -----------#
 # falcon.API instances are callable WSGI apps
@@ -109,12 +111,13 @@ cors = CORS(allow_all_origins=True)  # Allow access from frontend
 app = falcon.API(middleware=[cors.middleware])
 
 # Resources are represented by long-lived class instances
-#onegram = oneGram()
 ngram = nGram()
+#export = Export()
 
 # things will handle all requests to the '/things' URL path
-#app.add_route('/onegram', onegram)
 app.add_route('/query', ngram)
+app.add_route('/export', ngram, suffix='export')
+
 
 
 if __name__ == '__main__':
