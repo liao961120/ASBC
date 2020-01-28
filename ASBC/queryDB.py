@@ -207,8 +207,8 @@ class Corpus():
             A dictionary with:
             
             - ``keyword``: the keyword and its PoS tag
-            - ``left`` & ``right``: the left and right context,
-            consisting of tokens and their PoS tags.
+            - ``left`` & ``right``: the left and right context, 
+                consisting of tokens and their PoS tags.
         """
 
         full_text = []

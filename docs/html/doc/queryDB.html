@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Corpus &#8212; ASBC Query 0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="queryParser" href="queryParser.html" />
+    <link rel="prev" title="Welcome to ASBC Query’s documentation!" href="../index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="corpus">
+<h1><code class="docutils literal notranslate"><span class="pre">Corpus</span></code><a class="headerlink" href="#corpus" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="ASBC.queryDB.Corpus">
+<em class="property">class </em><code class="sig-prename descclassname">ASBC.queryDB.</code><code class="sig-name descname">Corpus</code><span class="sig-paren">(</span><em class="sig-param">db='data/asbc.sqlite'</em>, <em class="sig-param">corp='data/asbc_lite.jsonl'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ASBC/queryDB.html#Corpus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASBC.queryDB.Corpus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query corpus from sqlite database</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ASBC.queryDB.Corpus.concordance" title="ASBC.queryDB.Corpus.concordance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concordance</span></code></a>(self, text_id, sent_id, position)</p></td>
+<td><p>Retrive KWIC from corpus based on positional information.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ASBC.queryDB.Corpus.queryOneGram" title="ASBC.queryDB.Corpus.queryOneGram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">queryOneGram</span></code></a>(self, token, pos[, matchOpr])</p></td>
+<td><p>Query KWIC of one token</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 58%" />
+<col style="width: 42%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>getNgram</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>queryNgram</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="ASBC.queryDB.Corpus.concordance">
+<code class="sig-name descname">concordance</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">text_id</em>, <em class="sig-param">sent_id</em>, <em class="sig-param">position</em>, <em class="sig-param">n=1</em>, <em class="sig-param">left=10</em>, <em class="sig-param">right=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ASBC/queryDB.html#Corpus.concordance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASBC.queryDB.Corpus.concordance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrive KWIC from corpus based on positional information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>text_id</strong><span class="classifier">int</span></dt><dd><p>One of a index of the items (text level of the corpus) in
+the first level of <code class="xref py py-attr docutils literal notranslate"><span class="pre">corpus</span></code>. This is the index
+indicating the order of the texts in the corpus.</p>
+</dd>
+<dt><strong>sent_id</strong><span class="classifier">int</span></dt><dd><p>One of a index of the items (sentence level of the corpus)
+in the second level of <code class="xref py py-attr docutils literal notranslate"><span class="pre">corpus</span></code>. 
+This is the index indicating the order of the sentences in
+a text.</p>
+</dd>
+<dt><strong>position</strong><span class="classifier">int</span></dt><dd><p>One of a index of the items (word level of the corpus)
+in the third level of <code class="xref py py-attr docutils literal notranslate"><span class="pre">corpus</span></code>. 
+This is the index indicating the order of the words in
+a sentence.</p>
+</dd>
+<dt><strong>n</strong><span class="classifier">int, optional</span></dt><dd><p>Keyword length, by default 1</p>
+</dd>
+<dt><strong>left</strong><span class="classifier">int, optional</span></dt><dd><p>Left context size, in number of tokens, by default 10</p>
+</dd>
+<dt><strong>right</strong><span class="classifier">int, optional</span></dt><dd><p>Right context size, in number of tokens, by default 10</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>dict</dt><dd><p>A dictionary with:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">keyword</span></code>: the keyword and its PoS tag</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">left</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">right</span></code>: the left and right context, </dt><dd><p>consisting of tokens and their PoS tags.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ASBC.queryDB.Corpus.queryOneGram">
+<code class="sig-name descname">queryOneGram</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">token</em>, <em class="sig-param">pos</em>, <em class="sig-param">matchOpr={'token': '='</em>, <em class="sig-param">'pos': 'REGEXP'}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ASBC/queryDB.html#Corpus.queryOneGram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASBC.queryDB.Corpus.queryOneGram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query KWIC of one token</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>token</strong><span class="classifier">str</span></dt><dd><p>RegEx pattern of the keyword’s form.</p>
+</dd>
+<dt><strong>pos</strong><span class="classifier">str</span></dt><dd><p>SQL <code class="docutils literal notranslate"><span class="pre">LIKE</span></code> pattern of the keyword’s PoS tag. To search
+for:</p>
+<ul class="simple">
+<li><p>Nouns, use <code class="docutils literal notranslate"><span class="pre">N%</span></code></p></li>
+<li><p>Verbs, use <code class="docutils literal notranslate"><span class="pre">V%</span></code></p></li>
+</ul>
+</dd>
+<dt><strong>matchOpr: dict</strong></dt><dd><p>The operator <code class="docutils literal notranslate"><span class="pre">&lt;opr&gt;</span></code> given to the SQL command in 
+<code class="docutils literal notranslate"><span class="pre">WHERE</span> <span class="pre">x</span> <span class="pre">&lt;opr&gt;</span> <span class="pre">pattern</span></code>. Could be one of <code class="docutils literal notranslate"><span class="pre">=</span></code> (exact match),
+<code class="docutils literal notranslate"><span class="pre">REGEXP</span></code> (uses RegEx to match pattern), or 
+<code class="docutils literal notranslate"><span class="pre">LIKE</span></code> (uses <code class="docutils literal notranslate"><span class="pre">%</span></code> to match pattern).
+Defaults to exact match for <code class="docutils literal notranslate"><span class="pre">token</span></code> and sql pattern for <code class="docutils literal notranslate"><span class="pre">pos</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>pandas.DataFrame</dt><dd><p>A pandas dataframe for matching keywords and their
+positional information in the corpus.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">ASBC Query</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">Corpus</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="queryParser.html"><code class="docutils literal notranslate"><span class="pre">queryParser</span></code></a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to ASBC Query’s documentation!</a></li>
+      <li>Next: <a href="queryParser.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">queryParser</span></code></a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Yongfu Liao.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/doc/queryDB.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

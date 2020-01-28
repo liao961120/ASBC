@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>queryParser &#8212; ASBC Query 0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Corpus" href="queryDB.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ASBC.queryParser">
+<span id="queryparser"></span><h1><code class="docutils literal notranslate"><span class="pre">queryParser</span></code><a class="headerlink" href="#module-ASBC.queryParser" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="ASBC.queryParser.querySpecificity">
+<code class="sig-prename descclassname">ASBC.queryParser.</code><code class="sig-name descname">querySpecificity</code><span class="sig-paren">(</span><em class="sig-param">queryObj={'tk': '^我們$'</em>, <em class="sig-param">'pos': 'N%'</em>, <em class="sig-param">'tk.regex': True}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ASBC/queryParser.html#querySpecificity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASBC.queryParser.querySpecificity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Score a token object for specificity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>queryObj</strong><span class="classifier">dict</span></dt><dd><p>A token object in a list returned by <a class="reference internal" href="#ASBC.queryParser.tokenize" title="ASBC.queryParser.tokenize"><code class="xref py py-func docutils literal notranslate"><span class="pre">tokenize()</span></code></a>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>A point indicating the specificity of the token. Higher score
+means the token is more specific and may result in fewer query
+results in the corpus. This point is used to determine the
+seed token of an ngram to search in the corpus (to boost 
+performance).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="ASBC.queryParser.tokenize">
+<code class="sig-prename descclassname">ASBC.queryParser.</code><code class="sig-name descname">tokenize</code><span class="sig-paren">(</span><em class="sig-param">string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ASBC/queryParser.html#tokenize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASBC.queryParser.tokenize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse query string for ngram into token objects</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>string</strong><span class="classifier">str</span></dt><dd><p>Query string with each token enclosed in a pair 
+of square brackets. In each token, the tag <code class="docutils literal notranslate"><span class="pre">word</span></code>
+and <code class="docutils literal notranslate"><span class="pre">pos</span></code> could be given as <code class="docutils literal notranslate"><span class="pre">[word=&quot;他們&quot;</span> <span class="pre">pos=&quot;N.*&quot;]</span></code>.
+To search with regex in <code class="docutils literal notranslate"><span class="pre">word</span></code>, append <code class="docutils literal notranslate"><span class="pre">.regex</span></code> to
+<code class="docutils literal notranslate"><span class="pre">word</span></code>: <code class="docutils literal notranslate"><span class="pre">[word.regex=&quot;們$&quot;</span> <span class="pre">pos=&quot;N.*&quot;]</span></code>.
+<code class="docutils literal notranslate"><span class="pre">pos</span></code> by default uses regex search.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list</dt><dd><p>A list of token objects (dictionaries), with each dictionary
+representing the token in the query string (i.e. token enclosed 
+in the brackets). Each token has three key-value pairs:</p>
+<ul class="simple">
+<li><p><cite>tk</cite>: <code class="docutils literal notranslate"><span class="pre">str</span></code>. The pattern of the word to search for.</p></li>
+<li><p><cite>tk.regex</cite>: <code class="docutils literal notranslate"><span class="pre">bool</span></code>. Whether to use regex search with word.</p></li>
+<li><p><cite>pos</cite>: <code class="docutils literal notranslate"><span class="pre">str</span></code>. The pattern of the pos tag to search for.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">ASBC Query</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="queryDB.html"><code class="docutils literal notranslate"><span class="pre">Corpus</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">queryParser</span></code></a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="queryDB.html" title="previous chapter"><code class="docutils literal notranslate"><span class="pre">Corpus</span></code></a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Yongfu Liao.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/doc/queryParser.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
