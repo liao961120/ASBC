@@ -1,0 +1,15 @@
+.git
+__pycache__
+source
+build
+test.py
+cache.tsv
+make.bat
+Makefile
+setup.py
+
+.travis.yml
+*Dockerfile*
+README.md
+LICENSE.txt
+data/
