@@ -21,8 +21,8 @@ class Corpus():
 
     def __init__(self, db='data/asbc.sqlite', corp="data/asbc_lite.jsonl"):
         def functionRegex(pattern, value):
-            #pat = re.compile(r"\b" + pattern.lower() + r"\b")
-            pat = re.compile(pattern)
+            pat = re.compile(r"\b" + pattern + r"\b")
+            #pat = re.compile(pattern)
             return pat.search(value) is not None
         
         # sqlite corpus
@@ -33,8 +33,6 @@ class Corpus():
         self.cursor = conn.cursor()
 
         # Get column names of tables
-        #self.oneGramColnames = [row[1] for row in conn.execute("PRAGMA table_info(oneGram)")]
-        #self.twoGramColnames = [row[1] for row in conn.execute("PRAGMA table_info(twoGram)")]
         conn.commit()
 
         # jsonl corpus path
@@ -42,7 +40,7 @@ class Corpus():
             self.corp = [text for text in reader]
     
 
-    def queryOneGram(self, token, pos, matchOpr={'token': '=', 'pos': 'LIKE'}):
+    def queryOneGram(self, token, pos, matchOpr={'token': '=', 'pos': 'REGEXP'}):
         """Query KWIC of one token
         
         Parameters
@@ -74,7 +72,7 @@ class Corpus():
                 SELECT id, text_id, sent_id, position, token_id, pos_id FROM oneGram
                     WHERE 
                         (token_id IN (SELECT token_id FROM token 
-                                    WHERE token {matchOpr['token']} ?)) AND
+                                    WHERE token {matchOpr['token']} ?) ) AND
                         (pos_id IN (SELECT pos_id FROM pos 
                                     WHERE pos {matchOpr['pos']} ?) )
             """
@@ -112,9 +110,14 @@ class Corpus():
             return None
         return ngram
 
-    def _getQueryMatchSet(self, query, matchOpr):
+    def _getQueryMatchSet(self, query):
+        matchOpr = {'token': '=', 'pos': 'REGEXP'}
         out = []
         for q in query:
+            if q['tk.regex']:
+                matchOpr['token'] = 'REGEXP'
+            else:
+                matchOpr['token'] = '='
             # Query DB for matching tags
             matching_tk = []
             matching_pos = []
@@ -133,25 +136,27 @@ class Corpus():
             out.append({'tk': matching_tk, 'pos': matching_pos})
         return out
 
-    def queryNgram(self, query=[{'tk': '', 'pos': ''}, {'tk': '', 'pos': ''}], anchor={'n': 2, 'seed': 1}, matchOpr={'token': '=', 'pos': 'LIKE'}):
-        """
-        """
+    def queryNgram(self, query, anchor={'n': 2, 'seed': 1}):
         # Query Seed Token
         seed_tk = query[anchor['seed']]['tk']
         seed_pos = query[anchor['seed']]['pos']
+        if query[anchor['seed']]['tk.regex']:
+            matchOpr = {'token': 'REGEXP', 'pos': 'REGEXP'}
+        else:
+            matchOpr = {'token': '=', 'pos': 'REGEXP'}
         oneGram = self.queryOneGram(token=seed_tk, pos=seed_pos, matchOpr=matchOpr)
 
         # Scan through ngrams of the seed token
         valid_rows = []
-        queryMatchSet = self._getQueryMatchSet(query, matchOpr)
+        queryMatchSet = self._getQueryMatchSet(query)
         for idx, row in oneGram.iterrows():
             ngram = self.getNgram(row.text_id, row.sent_id, row.position, anchor)
-            if ngram:
-                valid = False
+            if ngram:  # ngram successfully extracted from sent
+                valid = True
                 for i in range(len(ngram)):
                     ngram_tk = ngram[i][0]
                     ngram_pos = ngram[i][1]
-                    # Check whether token and pos match between query and corpus
+                    # Check whether token and pos match between query ngram and corpus ngram
                     # If user didn't specify token or pos (i.e. None), they are treated
                     # as equal to whatever tokens or tags are in the corpus
                     tk_equal, pos_equal = False, False
@@ -159,8 +164,8 @@ class Corpus():
                         tk_equal = True
                     if (query[i]['pos'] is None) or (ngram_pos in queryMatchSet[i]['pos']):
                         pos_equal = True
-                    if tk_equal is True and pos_equal is True:
-                        valid = True
+                    if not (tk_equal and pos_equal):
+                        valid = False
                         break
             else:
                 valid = False
@@ -218,6 +223,6 @@ class Corpus():
         return {
             'keyword': keyword,
             'left': full_text[(keyword_idx - left):keyword_idx],
-            'right': full_text[(keyword_idx + 1):(keyword_idx + n + right)]
+            'right': full_text[(keyword_idx + n):(keyword_idx + n + right)]
         }
 

@@ -1,9 +1,30 @@
 import re
 
-#%%
-#query = '''[word="" pos=""][pos='' word="他"][word.regex='^我們$' pos='']'''
-
 def tokenize(string):
+    """Parse query string for ngram into token objects
+    
+    Parameters
+    ----------
+    string : str
+        Query string with each token enclosed in a pair 
+        of square brackets. In each token, the tag ``word``
+        and ``pos`` could be given as ``[word="他們" pos="N.*"]``.
+        To search with regex in ``word``, append ``.regex`` to
+        ``word``: ``[word.regex="們$" pos="N.*"]``.
+        ``pos`` by default uses regex search.
+    
+    Returns
+    -------
+    list
+        A list of token objects (dictionaries), with each dictionary
+        representing the token in the query string (i.e. token enclosed 
+        in the brackets). Each token has three key-value pairs:
+
+        - `tk`: ``str``. The pattern of the word to search for.
+        - `tk.regex`: ``bool``. Whether to use regex search with word.
+        - `pos`: ``str``. The pattern of the pos tag to search for.
+    """
+
     # Deal with single exact match of token
     if string.find("[") == -1:
         return [{
@@ -30,9 +51,9 @@ def tokenize(string):
                 'depth': depth
             })
     # Get matching brackets at first depth level
-    tk_pat = re.compile("""word=['"]([^'"]+)['"]""")
-    pos_pat = re.compile("""pos=['"]([^'" ]+)['"]""")
-    tkRegEx_pat = re.compile("""word.regex=['"]([^'"]+)['"]""")
+    tk_pat = re.compile('''word=['"]([^'"]+)['"]''')
+    pos_pat = re.compile('''pos=['"]([^'" ]+)['"]''')
+    tkRegEx_pat = re.compile('''word.regex=['"]([^'"]+)['"]''')
 
     output = []
     for tk in tokens:
@@ -50,6 +71,23 @@ def tokenize(string):
 
 #%%
 def querySpecificity(queryObj={'tk': '^我們$', 'pos': 'N%', 'tk.regex': True}):
+    """Score a token object for specificity.
+    
+    Parameters
+    ----------
+    queryObj : dict
+        A token object in a list returned by :py:func:`.tokenize`.
+    
+    Returns
+    -------
+    float
+        A point indicating the specificity of the token. Higher score
+        means the token is more specific and may result in fewer query
+        results in the corpus. This point is used to determine the
+        seed token of an ngram to search in the corpus (to boost 
+        performance).
+    """
+
     status = {
         'token': {
             'has_regEx': False,
