@@ -1,5 +1,4 @@
 falcon==2.0.0
 falcon_cors==1.1.7
 jsonlines==1.2.0
-numpy>=1.16.0
 pandas>=0.25.3

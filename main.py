@@ -96,10 +96,8 @@ class nGram(object):
                     left = ''.join(f"{word}" for word, tag in kwic['left'])
                     right = ''.join(f"{word}" for word, tag in kwic['right'])
                 f.write(f'{left}\t{keyword}\t{right}\n')
-
         resp.content_type = 'text/tsv'
         resp.status = falcon.HTTP_200  # This is the default status
-        #outfile = open(, encoding="utf-8")
         with open("cache.tsv", 'r') as f:
             resp.body = f.read()
         
