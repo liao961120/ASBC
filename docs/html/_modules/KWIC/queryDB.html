@@ -123,9 +123,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Add gender for Dcard</span>
-        <span class="k">if</span> <span class="n">gender</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">gender</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">head</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">                SELECT gender text_id, sent_id, position, token_id, pos_id FROM oneGram</span>
+<span class="s1">                SELECT text_id, sent_id, position, token_id, pos_id FROM oneGram</span>
 <span class="s1">                    WHERE gender = </span><span class="si">{}</span><span class="s1"> AND &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gender</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">head</span> <span class="o">=</span> <span class="s1">&#39;SELECT text_id, sent_id, position, token_id, pos_id FROM oneGram WHERE&#39;</span>

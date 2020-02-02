@@ -1,6 +1,6 @@
-# ASBC query backend
+# Concordancer backend
 
-API backend for [`liao961120/kwic`](https://github.com/liao961120/kwic)
+API backend for [`liao961120/kwic`](https://github.com/liao961120/kwic).
 
 ## Run API
 
