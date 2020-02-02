@@ -19,7 +19,8 @@ class nGram(object):
         params = {
             'query': '''[word="" pos=""][pos='' word="他"][word.regex='打' pos='V.*']''',
             'left': '10',
-            'right': '10'
+            'right': '10',
+            'gender': 3,
         }
         for k, v in req.params.items():
             params[k] = v
@@ -40,10 +41,12 @@ class nGram(object):
             'pos': 'REGEXP'}
 
         # Query Database
+        if params['gender'] not in [0, 1]:
+            params['gender'] = None
         if anchor['n'] == 1:
-            query = C.queryOneGram(token=seed_token['tk'], pos=seed_token['pos'], matchOpr=matchOpr)
+            query = C.queryOneGram(token=seed_token['tk'], pos=seed_token['pos'], matchOpr=matchOpr, gender=params['gender'])
         elif anchor['n'] > 1:
-            query = C.queryNgram(params['query'], anchor)
+            query = C.queryNgram(params['query'], anchor, gender=params['gender'])
         else:
             print("Bug at nGram.on_get() line 70 for querying DB")
         

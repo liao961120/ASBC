@@ -40,7 +40,7 @@ class Corpus():
             self.corp = [text for text in reader]
     
 
-    def queryOneGram(self, token, pos, matchOpr={'token': '=', 'pos': 'REGEXP'}):
+    def queryOneGram(self, token, pos, matchOpr={'token': '=', 'pos': 'REGEXP'}, gender=None):
         """Query KWIC of one token
         
         Parameters
@@ -67,34 +67,35 @@ class Corpus():
             positional information in the corpus.
         """
 
+        # Add gender for Dcard
+        if gender:
+            head = '''
+                SELECT gender text_id, sent_id, position, token_id, pos_id FROM oneGram
+                    WHERE gender = {} AND '''.format(gender)
+        else:
+            head = 'SELECT text_id, sent_id, position, token_id, pos_id FROM oneGram WHERE'
+
+        # Optimize search 
         if (token is not None) and (pos is not None):
-            sqlQuery = f"""
-                SELECT text_id, sent_id, position, token_id, pos_id FROM oneGram
-                    WHERE 
+            sqlQuery = f"""{head}
                         (token_id IN (SELECT token_id FROM token 
                                     WHERE token {matchOpr['token']} ?) ) AND
                         (pos_id IN (SELECT pos_id FROM pos 
                                     WHERE pos {matchOpr['pos']} ?) )
-            """
+                """
             q = (token, pos)
         elif (token is not None) and (pos is None):
-            sqlQuery = f"""
-                SELECT text_id, sent_id, position, token_id, pos_id FROM oneGram
-                    WHERE token_id IN 
-                        (SELECT token_id FROM token 
-                                WHERE token {matchOpr['token']} ?)
-            """
+            sqlQuery = f"""{head}
+                    token_id IN (SELECT token_id FROM token WHERE token {matchOpr['token']} ?)
+                    """
             q = (token, )
         elif (token is None) and (pos is not None):
-            sqlQuery = f"""
-                SELECT text_id, sent_id, position, token_id, pos_id FROM oneGram
-                    WHERE pos_id IN 
-                        (SELECT pos_id FROM pos 
-                                WHERE pos {matchOpr['pos']} ?)
-            """
+            sqlQuery = f"""{head}
+                    pos_id IN (SELECT pos_id FROM pos WHERE pos {matchOpr['pos']} ?)
+                    """
             q = (pos, )
         else:
-            print("Error in queryDB.py:line 98")
+            raise Exception("Error in queryDB.py:line 98")
             return 1
         
         rows = self.cursor.execute(sqlQuery, q)
@@ -136,7 +137,7 @@ class Corpus():
             out.append({'tk': matching_tk, 'pos': matching_pos})
         return out
 
-    def queryNgram(self, query, anchor={'n': 2, 'seed': 1}):
+    def queryNgram(self, query, anchor={'n': 2, 'seed': 1}, gender=None):
         # Query Seed Token
         seed_tk = query[anchor['seed']]['tk']
         seed_pos = query[anchor['seed']]['pos']
@@ -144,7 +145,7 @@ class Corpus():
             matchOpr = {'token': 'REGEXP', 'pos': 'REGEXP'}
         else:
             matchOpr = {'token': '=', 'pos': 'REGEXP'}
-        oneGram = self.queryOneGram(token=seed_tk, pos=seed_pos, matchOpr=matchOpr)
+        oneGram = self.queryOneGram(token=seed_tk, pos=seed_pos, matchOpr=matchOpr, gender=gender)
 
         # Scan through ngrams of the seed token
         valid_rows = []
