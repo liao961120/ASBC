@@ -2,12 +2,15 @@ import falcon
 import json
 import io
 from falcon_cors import CORS
-from ASBC.queryDB import Corpus
-import ASBC.queryParser as Parser
+from KWIC.queryDB import Corpus
+import KWIC.queryParser as Parser
 
 # Initialize corpus
-C = Corpus()
+DB = 'data/asbc.sqlite'
+CORP = 'data/asbc_lite.jsonl'
 CONCORDANCE_CACHE = []
+
+C = Corpus(db=DB, corp=CORP)
 ############  DEBUGGING ##############
 print("Corpus Loaded")
 ############ _DEBUGGING ##############
@@ -16,14 +19,19 @@ print("Corpus Loaded")
 class nGram(object):
     def on_get(self, req, resp):
         global CONCORDANCE_CACHE
+        global DB
         params = {
             'query': '''[word="" pos=""][pos='' word="他"][word.regex='打' pos='V.*']''',
             'left': '10',
             'right': '10',
             'gender': 3,
         }
+        # Parse query string
         for k, v in req.params.items():
             params[k] = v
+        params['gender'] = int(params['gender'])
+        params['left'] = int(params['left'])
+        params['right'] = int(params['right'])
         ############ DEBUGGING ##############
         print("Recieved request!!!")
         ############ _DEBUGGING ##############
@@ -41,20 +49,20 @@ class nGram(object):
             'pos': 'REGEXP'}
 
         # Query Database
-        if params['gender'] not in [0, 1]:
+        if DB.endswith('asbc.sqlite') or params['gender'] not in [0, 1, 2]:
             params['gender'] = None
         if anchor['n'] == 1:
             query = C.queryOneGram(token=seed_token['tk'], pos=seed_token['pos'], matchOpr=matchOpr, gender=params['gender'])
         elif anchor['n'] > 1:
             query = C.queryNgram(params['query'], anchor, gender=params['gender'])
         else:
-            print("Bug at nGram.on_get() line 70 for querying DB")
+            raise Exception("Bug at nGram.on_get() line 70 for querying DB")
         
         # Retrieve Concordance
         concord_params = {
             'n': anchor['n'],
-            'left': int(params['left']),
-            'right': int(params['right'])
+            'left': params['left'],
+            'right': params['right']
         }
         results = [{}] * query.shape[0]
         for i, (idx, row) in enumerate(query.iterrows()):
