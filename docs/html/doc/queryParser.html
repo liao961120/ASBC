@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>queryParser &#8212; ASBC Query 0.0 documentation</title>
+    <title>queryParser &#8212; KWIC backend 0.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -31,16 +31,16 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-ASBC.queryParser">
-<span id="queryparser"></span><h1><code class="docutils literal notranslate"><span class="pre">queryParser</span></code><a class="headerlink" href="#module-ASBC.queryParser" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-KWIC.queryParser">
+<span id="queryparser"></span><h1><code class="docutils literal notranslate"><span class="pre">queryParser</span></code><a class="headerlink" href="#module-KWIC.queryParser" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="ASBC.queryParser.querySpecificity">
-<code class="sig-prename descclassname">ASBC.queryParser.</code><code class="sig-name descname">querySpecificity</code><span class="sig-paren">(</span><em class="sig-param">queryObj={'tk': '^我們$'</em>, <em class="sig-param">'pos': 'N%'</em>, <em class="sig-param">'tk.regex': True}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ASBC/queryParser.html#querySpecificity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASBC.queryParser.querySpecificity" title="Permalink to this definition">¶</a></dt>
+<dt id="KWIC.queryParser.querySpecificity">
+<code class="sig-prename descclassname">KWIC.queryParser.</code><code class="sig-name descname">querySpecificity</code><span class="sig-paren">(</span><em class="sig-param">queryObj={'tk': '^我們$'</em>, <em class="sig-param">'pos': 'N%'</em>, <em class="sig-param">'tk.regex': True}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/KWIC/queryParser.html#querySpecificity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KWIC.queryParser.querySpecificity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Score a token object for specificity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>queryObj</strong><span class="classifier">dict</span></dt><dd><p>A token object in a list returned by <a class="reference internal" href="#ASBC.queryParser.tokenize" title="ASBC.queryParser.tokenize"><code class="xref py py-func docutils literal notranslate"><span class="pre">tokenize()</span></code></a>.</p>
+<dt><strong>queryObj</strong><span class="classifier">dict</span></dt><dd><p>A token object in a list returned by <a class="reference internal" href="#KWIC.queryParser.tokenize" title="KWIC.queryParser.tokenize"><code class="xref py py-func docutils literal notranslate"><span class="pre">tokenize()</span></code></a>.</p>
 </dd>
 </dl>
 </dd>
@@ -58,8 +58,8 @@ performance).</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="ASBC.queryParser.tokenize">
-<code class="sig-prename descclassname">ASBC.queryParser.</code><code class="sig-name descname">tokenize</code><span class="sig-paren">(</span><em class="sig-param">string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ASBC/queryParser.html#tokenize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASBC.queryParser.tokenize" title="Permalink to this definition">¶</a></dt>
+<dt id="KWIC.queryParser.tokenize">
+<code class="sig-prename descclassname">KWIC.queryParser.</code><code class="sig-name descname">tokenize</code><span class="sig-paren">(</span><em class="sig-param">string</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/KWIC/queryParser.html#tokenize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KWIC.queryParser.tokenize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse query string for ngram into token objects</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -98,7 +98,7 @@ in the brackets). Each token has three key-value pairs:</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">ASBC Query</a></h1>
+<h1 class="logo"><a href="../index.html">KWIC backend</a></h1>
 
 
 

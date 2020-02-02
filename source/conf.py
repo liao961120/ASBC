@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'ASBC Query'
+project = 'KWIC backend'
 copyright = '2020, Yongfu Liao'
 author = 'Yongfu Liao'
 

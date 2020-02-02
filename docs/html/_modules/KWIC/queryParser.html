@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>ASBC.queryParser &#8212; KWIC backend 0.0 documentation</title>
+    <title>KWIC.queryParser &#8212; KWIC backend 0.0 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -30,10 +30,10 @@
 
           <div class="body" role="main">
             
-  <h1>Source code for ASBC.queryParser</h1><div class="highlight"><pre>
+  <h1>Source code for KWIC.queryParser</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">re</span>
 
-<div class="viewcode-block" id="tokenize"><a class="viewcode-back" href="../../doc/queryParser.html#ASBC.queryParser.tokenize">[docs]</a><span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+<div class="viewcode-block" id="tokenize"><a class="viewcode-back" href="../../doc/queryParser.html#KWIC.queryParser.tokenize">[docs]</a><span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Parse query string for ngram into token objects</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
@@ -103,7 +103,7 @@
     <span class="k">return</span> <span class="n">output</span></div>
 
 <span class="c1">#%%</span>
-<div class="viewcode-block" id="querySpecificity"><a class="viewcode-back" href="../../doc/queryParser.html#ASBC.queryParser.querySpecificity">[docs]</a><span class="k">def</span> <span class="nf">querySpecificity</span><span class="p">(</span><span class="n">queryObj</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;tk&#39;</span><span class="p">:</span> <span class="s1">&#39;^我們$&#39;</span><span class="p">,</span> <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="s1">&#39;N%&#39;</span><span class="p">,</span> <span class="s1">&#39;tk.regex&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}):</span>
+<div class="viewcode-block" id="querySpecificity"><a class="viewcode-back" href="../../doc/queryParser.html#KWIC.queryParser.querySpecificity">[docs]</a><span class="k">def</span> <span class="nf">querySpecificity</span><span class="p">(</span><span class="n">queryObj</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;tk&#39;</span><span class="p">:</span> <span class="s1">&#39;^我們$&#39;</span><span class="p">,</span> <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="s1">&#39;N%&#39;</span><span class="p">,</span> <span class="s1">&#39;tk.regex&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}):</span>
     <span class="sd">&quot;&quot;&quot;Score a token object for specificity.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>

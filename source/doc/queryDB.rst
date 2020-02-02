@@ -1,6 +1,6 @@
 ``Corpus``
 ===============================================
 
-.. autoclass:: ASBC.queryDB.Corpus
+.. autoclass:: KWIC.queryDB.Corpus
     :members:
 

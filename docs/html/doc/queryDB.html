@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Corpus &#8212; ASBC Query 0.0 documentation</title>
+    <title>Corpus &#8212; KWIC backend 0.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="queryParser" href="queryParser.html" />
-    <link rel="prev" title="Welcome to ASBC Query’s documentation!" href="../index.html" />
+    <link rel="prev" title="Concordance App backend" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -35,8 +35,8 @@
   <div class="section" id="corpus">
 <h1><code class="docutils literal notranslate"><span class="pre">Corpus</span></code><a class="headerlink" href="#corpus" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="ASBC.queryDB.Corpus">
-<em class="property">class </em><code class="sig-prename descclassname">ASBC.queryDB.</code><code class="sig-name descname">Corpus</code><span class="sig-paren">(</span><em class="sig-param">db='data/asbc.sqlite'</em>, <em class="sig-param">corp='data/asbc_lite.jsonl'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ASBC/queryDB.html#Corpus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASBC.queryDB.Corpus" title="Permalink to this definition">¶</a></dt>
+<dt id="KWIC.queryDB.Corpus">
+<em class="property">class </em><code class="sig-prename descclassname">KWIC.queryDB.</code><code class="sig-name descname">Corpus</code><span class="sig-paren">(</span><em class="sig-param">db='data/asbc.sqlite'</em>, <em class="sig-param">corp='data/asbc_lite.jsonl'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/KWIC/queryDB.html#Corpus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KWIC.queryDB.Corpus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Query corpus from sqlite database</p>
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -45,32 +45,24 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ASBC.queryDB.Corpus.concordance" title="ASBC.queryDB.Corpus.concordance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concordance</span></code></a>(self, text_id, sent_id, position)</p></td>
-<td><p>Retrive KWIC from corpus based on positional information.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#KWIC.queryDB.Corpus.concordance" title="KWIC.queryDB.Corpus.concordance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concordance</span></code></a>(self, text_id, sent_id, position)</p></td>
+<td><p>Retrive all KWIC instances from corpus based on positional information</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ASBC.queryDB.Corpus.queryOneGram" title="ASBC.queryDB.Corpus.queryOneGram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">queryOneGram</span></code></a>(self, token, pos[, matchOpr])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#KWIC.queryDB.Corpus.getNgram" title="KWIC.queryDB.Corpus.getNgram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getNgram</span></code></a>(self, text_id, sent_id, position[, …])</p></td>
+<td><p>Get the ngram of a seed token from the in-memory corpus</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#KWIC.queryDB.Corpus.queryNgram" title="KWIC.queryDB.Corpus.queryNgram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">queryNgram</span></code></a>(self, query[, anchor, gender])</p></td>
+<td><p>Query KWIC of phrases</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#KWIC.queryDB.Corpus.queryOneGram" title="KWIC.queryDB.Corpus.queryOneGram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">queryOneGram</span></code></a>(self, token, pos[, matchOpr, …])</p></td>
 <td><p>Query KWIC of one token</p></td>
 </tr>
 </tbody>
 </table>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 58%" />
-<col style="width: 42%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>getNgram</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>queryNgram</strong></p></td>
-<td></td>
-</tr>
-</tbody>
-</table>
 <dl class="method">
-<dt id="ASBC.queryDB.Corpus.concordance">
-<code class="sig-name descname">concordance</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">text_id</em>, <em class="sig-param">sent_id</em>, <em class="sig-param">position</em>, <em class="sig-param">n=1</em>, <em class="sig-param">left=10</em>, <em class="sig-param">right=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ASBC/queryDB.html#Corpus.concordance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASBC.queryDB.Corpus.concordance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrive KWIC from corpus based on positional information.</p>
+<dt id="KWIC.queryDB.Corpus.concordance">
+<code class="sig-name descname">concordance</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">text_id</em>, <em class="sig-param">sent_id</em>, <em class="sig-param">position</em>, <em class="sig-param">n=1</em>, <em class="sig-param">left=10</em>, <em class="sig-param">right=10</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/KWIC/queryDB.html#Corpus.concordance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KWIC.queryDB.Corpus.concordance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrive all KWIC instances from corpus based on positional information</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -114,26 +106,96 @@ a sentence.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="ASBC.queryDB.Corpus.queryOneGram">
-<code class="sig-name descname">queryOneGram</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">token</em>, <em class="sig-param">pos</em>, <em class="sig-param">matchOpr={'token': '='</em>, <em class="sig-param">'pos': 'REGEXP'}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ASBC/queryDB.html#Corpus.queryOneGram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ASBC.queryDB.Corpus.queryOneGram" title="Permalink to this definition">¶</a></dt>
-<dd><p>Query KWIC of one token</p>
+<dt id="KWIC.queryDB.Corpus.getNgram">
+<code class="sig-name descname">getNgram</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">text_id</em>, <em class="sig-param">sent_id</em>, <em class="sig-param">position</em>, <em class="sig-param">anchor={'n': 4</em>, <em class="sig-param">'seed': 1}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/KWIC/queryDB.html#Corpus.getNgram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KWIC.queryDB.Corpus.getNgram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the ngram of a seed token from the in-memory corpus</p>
+<p>The three parameters <code class="docutils literal notranslate"><span class="pre">text_id</span></code>, <code class="docutils literal notranslate"><span class="pre">sent_id</span></code>, and <code class="docutils literal notranslate"><span class="pre">position</span></code> together
+locates the position of a seed token in the corpus. The info about the ngram
+in which this seed token lies is saved in the parameter <code class="docutils literal notranslate"><span class="pre">anchor</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
+<dt><strong>text_id</strong><span class="classifier">int</span></dt><dd><p>The index of the text in the corpus.</p>
+</dd>
+<dt><strong>sent_id</strong><span class="classifier">int</span></dt><dd><p>The index of the sentence in the text.</p>
+</dd>
+<dt><strong>position</strong><span class="classifier">int</span></dt><dd><p>The index of the token in the sentence.</p>
+</dd>
+<dt><strong>anchor</strong><span class="classifier">dict, optional</span></dt><dd><p>Information about the seed token’s ngram, by default 
+{‘n’: 4, ‘seed’: 1}.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">seed</span></code>: The token’s position in the ngram</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code>:  The ngram’s length</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list</dt><dd><p>An ngram stored as (word, tag) pairs in a list.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="KWIC.queryDB.Corpus.queryNgram">
+<code class="sig-name descname">queryNgram</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">query</em>, <em class="sig-param">anchor={'n': 2</em>, <em class="sig-param">'seed': 1}</em>, <em class="sig-param">gender=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/KWIC/queryDB.html#Corpus.queryNgram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KWIC.queryDB.Corpus.queryNgram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query KWIC of phrases</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>query</strong><span class="classifier">list</span></dt><dd><p>A list of token objects (dictionaries), with each dictionary
+representing the token in the query string (i.e. token enclosed 
+in the brackets). Returned by <code class="xref py py-func docutils literal notranslate"><span class="pre">queryParser.tokenize()</span></code>.</p>
+</dd>
+<dt><strong>anchor</strong><span class="classifier">dict, optional</span></dt><dd><p>Passed to <code class="docutils literal notranslate"><span class="pre">anchor</span></code> in <a class="reference internal" href="#KWIC.queryDB.Corpus.getNgram" title="KWIC.queryDB.Corpus.getNgram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">getNgram()</span></code></a>, 
+by default {‘n’: 2, ‘seed’: 1}.</p>
+</dd>
+<dt><strong>gender</strong><span class="classifier">int, optional</span></dt><dd><p>Passed to <code class="docutils literal notranslate"><span class="pre">gender</span></code> in <a class="reference internal" href="#KWIC.queryDB.Corpus.queryOneGram" title="KWIC.queryDB.Corpus.queryOneGram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">queryOneGram()</span></code></a>, by default None.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>pandas.DataFrame</dt><dd><p>A pandas dataframe for matching keywords and their
+positional information in the corpus.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="KWIC.queryDB.Corpus.queryOneGram">
+<code class="sig-name descname">queryOneGram</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">token</em>, <em class="sig-param">pos</em>, <em class="sig-param">matchOpr={'token': '='</em>, <em class="sig-param">'pos': 'REGEXP'}</em>, <em class="sig-param">gender=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/KWIC/queryDB.html#Corpus.queryOneGram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#KWIC.queryDB.Corpus.queryOneGram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query KWIC of one token</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
 <dt><strong>token</strong><span class="classifier">str</span></dt><dd><p>RegEx pattern of the keyword’s form.</p>
 </dd>
-<dt><strong>pos</strong><span class="classifier">str</span></dt><dd><p>SQL <code class="docutils literal notranslate"><span class="pre">LIKE</span></code> pattern of the keyword’s PoS tag. To search
-for:</p>
+<dt><strong>pos</strong><span class="classifier">str</span></dt><dd><p>RegEx pattern of the keyword’s PoS tag. E.g., to 
+search for:</p>
 <ul class="simple">
-<li><p>Nouns, use <code class="docutils literal notranslate"><span class="pre">N%</span></code></p></li>
-<li><p>Verbs, use <code class="docutils literal notranslate"><span class="pre">V%</span></code></p></li>
+<li><p>Nouns, use <code class="docutils literal notranslate"><span class="pre">N.*</span></code></p></li>
+<li><p>Verbs, use <code class="docutils literal notranslate"><span class="pre">V.*</span></code></p></li>
 </ul>
+<p>See the tag set <a class="reference external" href="https://github.com/ckiplab/ckiptagger/wiki/POS-Tags">here</a>.</p>
 </dd>
 <dt><strong>matchOpr: dict</strong></dt><dd><p>The operator <code class="docutils literal notranslate"><span class="pre">&lt;opr&gt;</span></code> given to the SQL command in 
 <code class="docutils literal notranslate"><span class="pre">WHERE</span> <span class="pre">x</span> <span class="pre">&lt;opr&gt;</span> <span class="pre">pattern</span></code>. Could be one of <code class="docutils literal notranslate"><span class="pre">=</span></code> (exact match),
 <code class="docutils literal notranslate"><span class="pre">REGEXP</span></code> (uses RegEx to match pattern), or 
 <code class="docutils literal notranslate"><span class="pre">LIKE</span></code> (uses <code class="docutils literal notranslate"><span class="pre">%</span></code> to match pattern).
 Defaults to exact match for <code class="docutils literal notranslate"><span class="pre">token</span></code> and sql pattern for <code class="docutils literal notranslate"><span class="pre">pos</span></code>.</p>
+</dd>
+<dt><strong>gender: int, optional</strong></dt><dd><p>Pre-filter SQL database based on the sex of the texts authors.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0</span></code>: female</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">1</span></code>: male</p></li>
+<li><p>other values: all (no filter)</p></li>
+</ul>
 </dd>
 </dl>
 </dd>
@@ -158,7 +220,7 @@ positional information in the corpus.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">ASBC Query</a></h1>
+<h1 class="logo"><a href="../index.html">KWIC backend</a></h1>
 
 
 
@@ -178,7 +240,7 @@ positional information in the corpus.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to ASBC Query’s documentation!</a></li>
+      <li>Previous: <a href="../index.html" title="previous chapter">Concordance App backend</a></li>
       <li>Next: <a href="queryParser.html" title="next chapter"><code class="docutils literal notranslate"><span class="pre">queryParser</span></code></a></li>
   </ul></li>
 </ul>

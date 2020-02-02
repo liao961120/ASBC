@@ -1,6 +1,6 @@
 ``queryParser``
 ===============================================
 
-.. automodule:: ASBC.queryParser
+.. automodule:: KWIC.queryParser
     :members:
 
