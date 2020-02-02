@@ -69,7 +69,7 @@ class Corpus():
 
         if (token is not None) and (pos is not None):
             sqlQuery = f"""
-                SELECT id, text_id, sent_id, position, token_id, pos_id FROM oneGram
+                SELECT text_id, sent_id, position, token_id, pos_id FROM oneGram
                     WHERE 
                         (token_id IN (SELECT token_id FROM token 
                                     WHERE token {matchOpr['token']} ?) ) AND
@@ -79,7 +79,7 @@ class Corpus():
             q = (token, pos)
         elif (token is not None) and (pos is None):
             sqlQuery = f"""
-                SELECT id, text_id, sent_id, position, token_id, pos_id FROM oneGram
+                SELECT text_id, sent_id, position, token_id, pos_id FROM oneGram
                     WHERE token_id IN 
                         (SELECT token_id FROM token 
                                 WHERE token {matchOpr['token']} ?)
@@ -87,7 +87,7 @@ class Corpus():
             q = (token, )
         elif (token is None) and (pos is not None):
             sqlQuery = f"""
-                SELECT id, text_id, sent_id, position, token_id, pos_id FROM oneGram
+                SELECT text_id, sent_id, position, token_id, pos_id FROM oneGram
                     WHERE pos_id IN 
                         (SELECT pos_id FROM pos 
                                 WHERE pos {matchOpr['pos']} ?)
@@ -100,7 +100,7 @@ class Corpus():
         rows = self.cursor.execute(sqlQuery, q)
         self.conn.commit()
 
-        return pd.DataFrame(data=rows, columns=['id', 'text_id', 'sent_id', 'position', 'token_id', 'pos_id'])
+        return pd.DataFrame(data=rows, columns=['text_id', 'sent_id', 'position', 'token_id', 'pos_id'])
 
     def getNgram(self, text_id, sent_id, position, anchor={'n': 4, 'seed': 1}):
         sent = self.corp[text_id][sent_id]
