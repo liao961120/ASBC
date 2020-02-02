@@ -90,9 +90,9 @@ class Corpus():
         """
 
         # Add gender for Dcard
-        if gender:
+        if gender is not None:
             head = '''
-                SELECT gender text_id, sent_id, position, token_id, pos_id FROM oneGram
+                SELECT text_id, sent_id, position, token_id, pos_id FROM oneGram
                     WHERE gender = {} AND '''.format(gender)
         else:
             head = 'SELECT text_id, sent_id, position, token_id, pos_id FROM oneGram WHERE'

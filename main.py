@@ -49,7 +49,7 @@ class nGram(object):
             'pos': 'REGEXP'}
 
         # Query Database
-        if DB.endswith('asbc.sqlite') or params['gender'] not in [0, 1, 2]:
+        if DB.endswith('asbc.sqlite') or params['gender'] not in [0, 1]:
             params['gender'] = None
         if anchor['n'] == 1:
             query = C.queryOneGram(token=seed_token['tk'], pos=seed_token['pos'], matchOpr=matchOpr, gender=params['gender'])
@@ -57,7 +57,7 @@ class nGram(object):
             query = C.queryNgram(params['query'], anchor, gender=params['gender'])
         else:
             raise Exception("Bug at nGram.on_get() line 70 for querying DB")
-        
+
         # Retrieve Concordance
         concord_params = {
             'n': anchor['n'],
