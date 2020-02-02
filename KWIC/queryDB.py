@@ -11,7 +11,7 @@ def sentPos2textPos(sent_len_lst, sent_id, position):
 
 
 #%%
-import jsonlines
+import json
 import re
 import pandas as pd
 
@@ -20,6 +20,20 @@ class Corpus():
     """
 
     def __init__(self, db='data/asbc.sqlite', corp="data/asbc_lite.jsonl"):
+        """Initialize a corpus for query
+        
+        Parameters
+        ----------
+        db : str, optional
+            Relative path to the sqlite database of the corpus, 
+            by default 'data/asbc.sqlite'.
+        corp : str, optional
+            Relative path to the jsonl file of the corpus, 
+            by default "data/asbc_lite.jsonl". This file is
+            read into memory to enable fast locating of kwic
+            in the corpus.
+        """
+
         def functionRegex(pattern, value):
             pat = re.compile(r"\b" + pattern + r"\b")
             #pat = re.compile(pattern)
@@ -36,8 +50,8 @@ class Corpus():
         conn.commit()
 
         # jsonl corpus path
-        with jsonlines.open(corp) as reader:
-            self.corp = [text for text in reader]
+        with open(corp) as f:
+            self.corp = [json.loads(line) for line in f ]
     
 
     def queryOneGram(self, token, pos, matchOpr={'token': '=', 'pos': 'REGEXP'}, gender=None):
@@ -48,17 +62,25 @@ class Corpus():
         token : str
             RegEx pattern of the keyword's form.
         pos : str
-            SQL ``LIKE`` pattern of the keyword's PoS tag. To search
-            for:
+            RegEx pattern of the keyword's PoS tag. E.g., to 
+            search for:
 
-            - Nouns, use ``N%``
-            - Verbs, use ``V%``
+            - Nouns, use ``N.*``
+            - Verbs, use ``V.*``
+
+            See the tag set `here <https://github.com/ckiplab/ckiptagger/wiki/POS-Tags>`_.
         matchOpr: dict
             The operator ``<opr>`` given to the SQL command in 
             ``WHERE x <opr> pattern``. Could be one of ``=`` (exact match),
             ``REGEXP`` (uses RegEx to match pattern), or 
             ``LIKE`` (uses ``%`` to match pattern).
             Defaults to exact match for ``token`` and sql pattern for ``pos``.
+        gender: int, optional
+            Pre-filter SQL database based on the sex of the texts authors.
+
+            - ``0``: female
+            - ``1``: male
+            - other values: all (no filter)
 
         Returns
         -------
@@ -104,6 +126,33 @@ class Corpus():
         return pd.DataFrame(data=rows, columns=['text_id', 'sent_id', 'position', 'token_id', 'pos_id'])
 
     def getNgram(self, text_id, sent_id, position, anchor={'n': 4, 'seed': 1}):
+        """Get the ngram of a seed token from the in-memory corpus
+        
+        The three parameters ``text_id``, ``sent_id``, and ``position`` together
+        locates the position of a seed token in the corpus. The info about the ngram
+        in which this seed token lies is saved in the parameter ``anchor``.
+
+        Parameters
+        ----------
+        text_id : int
+            The index of the text in the corpus.
+        sent_id : int
+            The index of the sentence in the text.
+        position : int
+            The index of the token in the sentence.
+        anchor : dict, optional
+            Information about the seed token's ngram, by default 
+            {'n': 4, 'seed': 1}.
+
+            - ``seed``: The token's position in the ngram 
+            - ``n``:  The ngram's length
+        
+        Returns
+        -------
+        list
+            An ngram stored as (word, tag) pairs in a list.
+        """
+
         sent = self.corp[text_id][sent_id]
         ngram_idx_start = position - anchor['seed']
         ngram = sent[ngram_idx_start:(ngram_idx_start + anchor['n'])]
@@ -138,6 +187,27 @@ class Corpus():
         return out
 
     def queryNgram(self, query, anchor={'n': 2, 'seed': 1}, gender=None):
+        """Query KWIC of phrases
+        
+        Parameters
+        ----------
+        query : list
+            A list of token objects (dictionaries), with each dictionary
+            representing the token in the query string (i.e. token enclosed 
+            in the brackets). Returned by :py:func:`queryParser.tokenize`.
+        anchor : dict, optional
+            Passed to ``anchor`` in :py:meth:`.getNgram`, 
+            by default {'n': 2, 'seed': 1}.
+        gender : int, optional
+            Passed to ``gender`` in :py:meth:`.queryOneGram`, by default None.
+        
+        Returns
+        -------
+        pandas.DataFrame
+            A pandas dataframe for matching keywords and their
+            positional information in the corpus.
+        """
+
         # Query Seed Token
         seed_tk = query[anchor['seed']]['tk']
         seed_pos = query[anchor['seed']]['pos']
@@ -177,7 +247,7 @@ class Corpus():
 
 
     def concordance(self, text_id, sent_id, position, n=1, left=10, right=10):
-        """Retrive KWIC from corpus based on positional information.
+        """Retrive all KWIC instances from corpus based on positional information
         
         Parameters
         ----------
